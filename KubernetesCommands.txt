@@ -1,0 +1,20 @@
+
+Label a node
+
+kubectl label nodes <node-name> <label-key>=<label-value>
+Example:
+kubectl label nodes node-1 size=Large
+
+
+Logs
+
+kubectl logs -f <pod-name> <container-name>
+Example
+kubectl logs -f event-simulator-pod event-simulator
+
+
+Rollback
+
+kubectl rollout undo <deployment-name>
+Example
+kubectl rollout undo deployment/myapp-deployment

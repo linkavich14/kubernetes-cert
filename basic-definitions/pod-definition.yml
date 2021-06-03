@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynginx-pod
+  namespace: dev
+  labels:
+    name: nginx
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "500m"
+        limits:
+          memory: "256Mi"
+          cpu: "1"
+  schedulerName: my-custom-scheduler
+  tolerations:
+    - key: "app"
+      operator: "Equal"
+      # Taint
+      value: "blue"
+      # NoSchedule, PreferNoSchedule,NoExecute
+      effect: "NoSchedule"
+  # Set the pod in a desired node
+  nodeSelector:
+    # Label from the node
+    size: Large
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: size
+                operator: In
+                values:
+                  - Large
+                  # Can add to another pod
+                # Do not add the pod in a small one
+                #operator: NotIn
+                #values:
+                #  - Small
