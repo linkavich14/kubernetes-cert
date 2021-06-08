@@ -18,3 +18,72 @@ Rollback
 kubectl rollout undo <deployment-name>
 Example
 kubectl rollout undo deployment/myapp-deployment
+
+
+Nodes Maintenance, update OS
+Set time out pod eviction
+kube-controller-manager --pod-eviction-timeout=5m0s
+
+
+Removes all the pods of a node and sent to other nodes
+kubectl drain <node-name>
+Example:
+kubectl drain node-1
+
+
+Allows pod to be schedule again after the pod was down
+kubectl uncordon <node-name>
+Example:
+kubectl uncordon node-1
+
+
+Marks a node unschedulable, does not terminate pods
+kubectl cordon <node-name>
+
+
+Velero, for backups
+
+ETCDTL
+ETCDTL_API=3 etcdctl snapshot save snapshot.db
+
+Restore ETCDTL
+service kube-apiserver stop
+etcdctl snapshot restore snapshot.db --data-dir /var/lib/etcd-from-backup
+systemctl daemon-reload
+service etcd restart
+service kube-apiserver start
+
+
+View Kubectl config
+kubectl config view
+
+
+Kube proxy
+Connectivity between pods and services between nodes
+
+Check Access:
+kubectl auth can-i create deployments
+kubectl auth can-i delete nodes
+Check with another user
+kubectl auth can-i create deployments --as dev-user --namespace test
+kubectl auth can-i delete nodes --as dev-user
+
+
+ROLES
+
+How many roles exist in all namespaces together?
+kubectl get roles --all-namespaces
+What are the resources the kube-proxy role in the kube-system namespace is given access to?
+kubectl describe role kube-proxy -n kube-system
+What actions can the kube-proxy role perform on configmaps ?
+kubectl describe role kube-proxy -n kube-system
+Which account is the kube-proxy role assigned to it?
+kubectl describe rolebinding kube-proxy -n kube-system
+
+
+create, list and delete pods in the default namespace.
+kubectl create role developer --namespace=default --verb=list,create --resource=pods
+To create a RoleBinding kubectl create rolebinding dev-user-binding --namespace=default --role=developer --user=dev-user
+
+he dev-user is trying to get details about the dark-blue-app pod in the blue namespace. Investigate and fix the issue.
+kubectl edit role developer -n blue

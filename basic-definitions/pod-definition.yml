@@ -6,6 +6,8 @@ metadata:
   labels:
     name: nginx
 spec:
+  securityContext:
+    runAsUser: 1000
   containers:
     - name: nginx-container
       image: nginx
@@ -16,6 +18,12 @@ spec:
         limits:
           memory: "256Mi"
           cpu: "1"
+      envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+
   schedulerName: my-custom-scheduler
   tolerations:
     - key: "app"
