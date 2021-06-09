@@ -11,6 +11,9 @@ spec:
   containers:
     - name: nginx-container
       image: nginx
+      volumeMounts:
+        - mountPath: "/var/www/html"
+          name: mypd
       resources:
         requests:
           memory: "128Mi"
@@ -23,7 +26,10 @@ spec:
             name: app-config
         - secretRef:
             name: app-secret
-
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: myclaim
   schedulerName: my-custom-scheduler
   tolerations:
     - key: "app"

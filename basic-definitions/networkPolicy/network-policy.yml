@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              name: api-pod
+          #If add a - works like Or otherwise and
+          namespaceSelector:
+            matchLabels:
+              name: prod
+        #Allow traffic from backup server
+        #Works like an Or operator
+        - ipBlock:
+            cidr: 192.168.5.10/32
+      ports:
+        - protocol: TCP
+          port: 3306
+  #The response of the database does not need an egress rule but
+  #when something needs to get out of the pod, it is goind to need
+  #egress rule
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 192.168.5.10/32
+      ports:
+        - name: Port Name
+          port: 80
+          protocol: TCP
+# Solutions that Support Network Policies
+# Kube-router
+# Calico
+# Romana
+# Weave-net
+
+# Solutions that do not support network policies
+# Flannel

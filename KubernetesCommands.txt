@@ -87,3 +87,7 @@ To create a RoleBinding kubectl create rolebinding dev-user-binding --namespace=
 
 he dev-user is trying to get details about the dark-blue-app pod in the blue namespace. Investigate and fix the issue.
 kubectl edit role developer -n blue
+
+
+PVC
+kubectl get persistentvolumeclaim
