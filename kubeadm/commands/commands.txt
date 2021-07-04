@@ -1,0 +1,64 @@
+
+
+# To get a new token to join the node to the control plane
+kubeadm token create --print-join-command
+
+# Switch namespace
+kubectl config set-context --current --namespace=<name>
+
+TroubleShooting
+
+kubectl -n <namespace> get all
+kubectl get svc mysql -o yaml > mysql-service.yaml
+
+
+kubectl -n <namespace> get ep
+
+kubectl -n gamma expose pod mysql --name=mysql-service
+
+
+Plane Control TroubleShooting
+
+kubectl logs kube-apiserver-master -n kube-system
+
+systemctl status kubelet
+
+Scheduler manifests
+
+/etc/kubernetes/manifests
+
+kubectl scale deployment app --replicas=2
+
+
+JSON Path
+
+kubectl get nodes -o=jsonpath='{$.items[*]metadata.name}{"\n"}{$.items[*].status.capacity.cpu}'
+
+Loop
+
+'{range $.items[*]metadata.name}{"\n"}{$.items[*].status.capacity.cpu}{"\n"}{end}'
+
+
+Deploy pod from kubectl
+
+kubectl run nginx-pod --image=nginx:alpine
+
+kubectl run messaging --image=redis:alpine -l  tier=msg
+To validate
+kubectl get pods --show-labels
+
+Create a namespace
+kubectl create ns apx-x9984574
+
+
+Get all nodes json
+kubectl get nodes -o=json
+ kubectl get nodes -o=json > /opt/outputs/nodes-z3444kd9.json
+
+Create service
+kubectl expose pod messaging --name messaging-service --port 6379 --target-port 6379
+
+Create a deployment
+kubectl create deployment  hr-web-app --image=kodekloud/webapp-color
+Scale to 2 replicas
+kubectl scale deployment hr-web-app scaled
